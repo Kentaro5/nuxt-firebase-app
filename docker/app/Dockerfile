@@ -1,0 +1,11 @@
+ARG APP_CODE_WORKDIR=${APP_CODE_WORKDIR}
+ARG NODE_VERSION=${NODE_VERSION}
+
+FROM node:${NODE_VERSION}-alpine
+
+RUN apk update && \
+    apk add git
+
+WORKDIR /src
+
+EXPOSE 3000

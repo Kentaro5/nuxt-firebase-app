@@ -1,0 +1,14 @@
+version: '3'
+services:
+  nuxt-app:
+    container_name: nuxt_firebase_app
+    build:
+      context: ./app
+      args:
+        - APP_CODE_WORKDIR=${APP_CODE_WORKDIR}
+        - NODE_VERSION=${NODE_VERSION}
+    volumes:
+      - ${APP_CODE_LOCAL_PATH}:${APP_CODE_WORKDIR}
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    tty: true
