@@ -11,4 +11,5 @@ services:
       - ${APP_CODE_LOCAL_PATH}:${APP_CODE_WORKDIR}
     ports:
       - ${APP_PORT}:${APP_PORT}
+      - '24678:24678'
     tty: true
