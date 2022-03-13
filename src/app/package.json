@@ -3,7 +3,10 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "start": "node .output/server/index.mjs"
+    "start": "node .output/server/index.mjs",
+    "lint": "prettier -c .",
+    "format": "prettier --write .",
+    "lint:all": "prettier -c . && eslint '**/*.{js,ts,vue}' && vue-tsc --noEmit"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.14.0",
