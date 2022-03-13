@@ -5,13 +5,4 @@ export default defineNuxtConfig({
     buildModules: [
         'nuxt-windicss', // nuxt用の設定追加
     ],
-    windicss: {
-        scan: {
-            dirs: ['./'],
-            exclude: [
-                'node_modules',
-                'dist',
-            ],
-        },
-    },
 })
