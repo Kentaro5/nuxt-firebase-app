@@ -6,6 +6,10 @@ import {
   getFirestore,
 } from 'firebase/firestore'
 
+definePageMeta({
+  middleware: 'auth',
+})
+
 onMounted(() => {
   getTests()
 })
@@ -19,8 +23,10 @@ async function getTests() {
     console.log(doc.id, " => ", doc.data());
   });
 }
-
 </script>
 <template>
-  <div>ログイン後のページ</div>
+  <div>
+    <div>ログイン後のページ</div>
+    <nuxt-link to="/signUp">新規登録</nuxt-link>
+  </div>
 </template>
