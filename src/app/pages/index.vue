@@ -1,32 +1,15 @@
 <script setup lang="ts">
-import {onMounted} from 'vue';
-import {
-  collection, query,
-  getDocs,
-  getFirestore,
-} from 'firebase/firestore'
-
 definePageMeta({
   middleware: 'auth',
 })
-
-onMounted(() => {
-  getTests()
-})
-
-async function getTests() {
-  const db = getFirestore()
-  console.log(db);
-  const querySnapshot = await getDocs(query(collection(db, "tests")));
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
-  });
-}
 </script>
 <template>
   <div>
-    <div>ログイン後のページ</div>
-    <nuxt-link to="/signUp">新規登録</nuxt-link>
+    <div class="flex place-content-center items-center">
+      <div class="" @submit.prevent="signIn">
+        <p>ログイン後のページ</p>
+        <button class="bg-green-400 block text-white rounded-sm px-4 py-2" type="submit">ログアウト</button>
+      </div>
+    </div>
   </div>
 </template>

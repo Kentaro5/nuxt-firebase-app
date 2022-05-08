@@ -11,3 +11,5 @@ type UserNameInput = {
 }
 
 export const SignUpInput = EmailInput & PasswordInput & UserNameInput
+
+export const SignInInput = EmailInput & PasswordInput

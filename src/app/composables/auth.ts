@@ -1,6 +1,14 @@
 import {reactive, toRefs} from "vue";
-import {EmailInput, SignUpInput} from "~/composables/types/formInput";
-import {getAuth, sendSignInLinkToEmail, signInWithEmailLink, updateProfile, updatePassword, User} from "@firebase/auth";
+import {EmailInput, SignUpInput, SignInInput} from "~/composables/types/formInput";
+import {
+    getAuth,
+    sendSignInLinkToEmail,
+    signInWithEmailLink,
+    updateProfile,
+    updatePassword,
+    User,
+    signInWithEmailAndPassword
+} from "@firebase/auth";
 
 // default callback
 const defaultSuccessCallback: () => void = () => console.debug('succeeded')
@@ -15,8 +23,6 @@ export const useSendSignLink = (onSuccess = defaultSuccessCallback, onError = de
         const auth = getAuth()
         const url = new URL(window.location.origin)
         url.pathname = '/auth/action'
-        console.log('url.toString()');
-        console.log(url.toString());
         try {
             await sendSignInLinkToEmail(auth, formInput.email, {
                 url: url.toString(),
@@ -53,7 +59,6 @@ export const useSignUp = (onSuccess: (user: User) => void = defaultSuccessCallba
             // ユーザにプロフィールを設定する（この処理が終わったらcurrentUserのプロフィールを参照してよい）
             await updateProfile(user, {
                 displayName: formInputs.userName,
-                photoURL: '/img/mypage/user_icon.gif',
             })
             // パスワードを設定する（この処理が終わったらメール+パスワードでログインできるようになる）
             await updatePassword(user, formInputs.password)
@@ -71,14 +76,25 @@ export const useSignUp = (onSuccess: (user: User) => void = defaultSuccessCallba
     return {...toRefs(formInputs), signUp}
 }
 
-export const validateAuth = () => {
-    const auth = getAuth()
-    console.log('auth');
-    console.log(auth);
-    console.log(auth.currentUser);
-    if (auth.currentUser === null) {
-        return false;
+export const useSignIn = (onSuccess: (user: User) => void = defaultSuccessCallback, onError = defaultErrorCallback) => {
+    const formInputs = reactive<SignInInput>({
+        email: '',
+        password: '',
+    })
+
+    const signIn = async () => {
+        const auth = getAuth()
+        try {
+            const { user } = await signInWithEmailAndPassword(auth, formInputs.email, formInputs.password)
+            onSuccess(user)
+        } catch (error) {
+            console.debug(JSON.stringify(error))
+            onError({ ...(error as Error), message: 'メールアドレスまたはパスワードが間違っています。' })
+        }
     }
 
-    return true;
+    return {
+        ...toRefs(formInputs),
+        signIn,
+    }
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {getApps, initializeApp} from "firebase/app";
+import {getAuth, onAuthStateChanged} from "@firebase/auth";
 
 if (getApps().length === 0) {
   const runtimeConfig = useRuntimeConfig()
@@ -14,6 +15,7 @@ if (getApps().length === 0) {
   };
   initializeApp(firebaseConfig);
 }
+
 </script>
 <template>
   <div>
