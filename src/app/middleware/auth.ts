@@ -1,5 +1,5 @@
-import {validateAuth} from "~/composables/auth";
 import {getApps, initializeApp} from "firebase/app";
+import {getAuth, onAuthStateChanged} from "@firebase/auth";
 
 if (getApps().length === 0) {
     const runtimeConfig = useRuntimeConfig()
@@ -15,11 +15,11 @@ if (getApps().length === 0) {
     initializeApp(firebaseConfig);
 }
 
-export default defineNuxtRouteMiddleware(async(to, from) => {
-    console.log('FFFFFFFF');
-    console.log('to');
-    console.log(to);
-    console.log('from');
-    console.log(from);
-    console.log(validateAuth());
+export default defineNuxtRouteMiddleware((to, from) => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user === null) {
+            return navigateTo('/signIn')
+        }
+    });
 })
