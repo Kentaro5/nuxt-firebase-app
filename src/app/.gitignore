@@ -7,3 +7,4 @@ nuxt.d.ts
 dist
 .env.development
 myownapp-edc00-firebase-adminsdk-u5h58-7d50453c11.json
+.vite
