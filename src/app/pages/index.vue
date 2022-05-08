@@ -1,26 +1,20 @@
 <script setup lang="ts">
-import {onMounted} from 'vue';
-import {
-  collection, query,
-  getDocs,
-  getFirestore,
-} from 'firebase/firestore'
+import {useSignOut} from "~/composables/auth";
 
-onMounted(() => {
-  getTests()
+definePageMeta({
+  middleware: 'auth',
 })
-
-async function getTests() {
-  const db = getFirestore()
-  console.log(db);
-  const querySnapshot = await getDocs(query(collection(db, "tests")));
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
-  });
-}
-
+const {signOut} = useSignOut();
 </script>
 <template>
-  <div>ログイン後のページ</div>
+  <div>
+    <div class="flex place-content-center items-center">
+      <div class="shadow-md max-360-none space-y-2 p-4">
+        <p>ログイン後のページ</p>
+        <form class="" @submit.prevent="signOut">
+          <button class="bg-green-400 block text-white rounded-sm px-4 py-2" type="submit">ログアウト</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
