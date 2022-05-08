@@ -7,7 +7,7 @@ import {
     updateProfile,
     updatePassword,
     User,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword, signOut
 } from "@firebase/auth";
 
 // default callback
@@ -96,5 +96,20 @@ export const useSignIn = (onSuccess: (user: User) => void = defaultSuccessCallba
     return {
         ...toRefs(formInputs),
         signIn,
+    }
+}
+
+export const useSignOut = (onSuccess = defaultSuccessCallback, onError = defaultErrorCallback) => {
+    return {
+        signOut: async () => {
+            const auth = getAuth()
+            try {
+                await signOut(auth)
+                onSuccess()
+            } catch (error) {
+                console.debug(JSON.stringify(error))
+                onError({ ...(error as Error), message: '予期しないエラーが発生しました。' })
+            }
+        },
     }
 }
