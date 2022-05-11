@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import {useSignOut} from "~/composables/auth";
-
-definePageMeta({
-  middleware: 'auth',
-})
-const {signOut} = useSignOut();
+import { useSignOut } from '~/composables/auth'
+console.log('ログイン後のページ')
+const { signOut } = useSignOut()
 </script>
 <template>
   <div>

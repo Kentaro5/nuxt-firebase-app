@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import {useSendSignLink} from "~/composables/auth"
-import EmailInput from "~/components/formInputs/EmailInput.vue";
-definePageMeta({
-  middleware: 'auth',
-})
+import { useSendSignLink } from '~/composables/auth'
+import EmailInput from '~/components/formInputs/EmailInput.vue'
 
-const {email, sendSignInLink} = useSendSignLink();
+const { email, sendSignInLink } = useSendSignLink()
 </script>
 <template>
   <div>
