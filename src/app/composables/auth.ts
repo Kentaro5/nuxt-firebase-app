@@ -1,18 +1,33 @@
 import {reactive, toRefs} from "vue";
 import {EmailInput, SignUpInput, SignInInput} from "~/composables/types/formInput";
 import {
-    getAuth,
-    sendSignInLinkToEmail,
-    signInWithEmailLink,
-    updateProfile,
-    updatePassword,
-    User,
-    signInWithEmailAndPassword, signOut
-} from "@firebase/auth";
-
+  getAuth,
+  sendSignInLinkToEmail,
+  signInWithEmailLink,
+  updateProfile,
+  updatePassword,
+  User,
+  signInWithEmailAndPassword,
+  signOut,
+  Unsubscribe,
+  onAuthStateChanged,
+} from '@firebase/auth'
+import { useState } from '#app'
+// 状態
+export const useCurrentUserState = () => useState<User | null>('CurrentUser', () => null)
 // default callback
 const defaultSuccessCallback: () => void = () => console.debug('succeeded')
 const defaultErrorCallback: (error: Error) => void = (error) => console.debug(JSON.stringify(error))
+
+export const useAuth = async () => {
+  const currentUser = useCurrentUserState()
+  await new Promise<Unsubscribe>((resolve) => {
+    const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
+      currentUser.value = user
+      resolve(unsubscribe)
+    })
+  })
+}
 
 export const useSendSignLink = (onSuccess = defaultSuccessCallback, onError = defaultErrorCallback) => {
     const formInput = reactive<EmailInput>({
