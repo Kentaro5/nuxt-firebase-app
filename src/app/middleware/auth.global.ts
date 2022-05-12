@@ -2,7 +2,7 @@ import { navigateTo } from '#app'
 import { useAuth, useCurrentUserState } from '~/composables/auth'
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  const unAuthRoutes: Array<string> = ['sign-in']
+  const unAuthRoutes: Array<string> = ['sign-in', 'reset-password', 'sign-up']
   if (!unAuthRoutes.includes(to.name)) {
     const currentUser = useCurrentUserState()
     if (currentUser.value !== null) {
