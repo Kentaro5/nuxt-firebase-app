@@ -1,8 +1,8 @@
 import { navigateTo } from '#app'
 import { useAuth, useCurrentUserState } from '~/composables/auth'
 
-export default defineNuxtRouteMiddleware(async (to, from) => {
-  const unAuthRoutes: Array<string> = ['signIn']
+export default defineNuxtRouteMiddleware(async (to) => {
+  const unAuthRoutes: Array<string> = ['sign-in']
   if (!unAuthRoutes.includes(to.name)) {
     const currentUser = useCurrentUserState()
     if (currentUser.value !== null) {
@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     // 無駄に処理をしないようにここに配置
     await useAuth()
     if (currentUser.value === null) {
-      return navigateTo('/signIn')
+      return navigateTo('/sign-in')
     }
   }
 })

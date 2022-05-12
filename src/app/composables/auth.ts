@@ -13,6 +13,7 @@ import {
   onAuthStateChanged,
 } from '@firebase/auth'
 import { useState } from '#app'
+
 // 状態
 export const useCurrentUserState = () => useState<User | null>('CurrentUser', () => null)
 // default callback
@@ -71,11 +72,10 @@ export const useSignUp = (onSuccess: (user: User) => void = defaultSuccessCallba
     try {
       const auth = getAuth()
       const { user } = await signInWithEmailLink(auth, formInputs.email)
-      // ユーザにプロフィールを設定する（この処理が終わったらcurrentUserのプロフィールを参照してよい）
       await updateProfile(user, {
         displayName: formInputs.userName,
       })
-      // パスワードを設定する（この処理が終わったらメール+パスワードでログインできるようになる）
+      // パスワードを設定する
       await updatePassword(user, formInputs.password)
       await user.getIdToken(true)
       onSuccess(user)
