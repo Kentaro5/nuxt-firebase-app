@@ -21,8 +21,8 @@ const {email, password, signIn} = useSignIn(
         <EmailInput v-model="email" />
         <PasswordInput v-model="password"/>
         <button class="bg-green-400 block text-white rounded-sm px-4 py-2" type="submit">ログイン</button>
-        <nuxt-link to="/sign-up" class="block">新規登録</nuxt-link>
-        <nuxt-link to="/reset-password" class="block">パスワード変更</nuxt-link>
+        <NuxtLink to="/sign-up" class="block">新規登録</NuxtLink>
+        <NuxtLink to="/reset-password" class="block">パスワード変更</NuxtLink>
       </form>
     </div>
   </div>
