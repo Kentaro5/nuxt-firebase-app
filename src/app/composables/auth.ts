@@ -179,7 +179,6 @@ export const useResetPassword = (oobCode:string, onSuccess = defaultSuccessCallb
       await confirmPasswordReset(auth, oobCode, formInputs.password)
       onSuccess()
     } catch(e) {
-      console.log(e);
       onError(new Error('エラーが起きました。ログイン画面に戻って、もう一度パスワードを設定を行ってください。'))
     }
   }

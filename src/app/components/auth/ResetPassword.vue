@@ -13,6 +13,7 @@ if (typeof oobCode !== 'string') {
 const { email, password, confirm, resetPassword } = useResetPassword(
     oobCode,
     () => {
+      alert('新しくパスワードを設定しました。')
       navigateTo('/sign-in')
     },
     (error) => {

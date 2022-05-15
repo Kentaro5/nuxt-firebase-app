@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import {useResetPasswordLink} from "~/composables/auth";
 import EmailInput from '~/components/formInputs/EmailInput.vue'
+import {navigateTo} from "#app";
 
-const { email, sendResetPasswordLink } = useResetPasswordLink()
+const { email, sendResetPasswordLink } = useResetPasswordLink(
+    () => {
+      navigateTo()
+    }
+)
 </script>
 <template>
   <div>
