@@ -10,7 +10,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   Unsubscribe,
-  onAuthStateChanged,
+  onAuthStateChanged, sendPasswordResetEmail,
 } from '@firebase/auth'
 import { useState } from '#app'
 
@@ -129,4 +129,25 @@ export const useSignOut = (onSuccess = defaultSuccessCallback, onError = default
       }
     },
   }
+}
+
+export const useResetPasswordLink = (onSuccess = defaultSuccessCallback, onError = defaultErrorCallback) => {
+  const formInput = reactive<EmailInput>({
+    email: '',
+  })
+  const sendResetPasswordLink = async () => {
+    const auth = getAuth()
+    try {
+      await sendPasswordResetEmail(auth, formInput.email)
+      onSuccess()
+    } catch (error) {
+      console.debug(JSON.stringify(error))
+      onError({
+        ...(error as Error),
+        message: 'エラーが起きました',
+      })
+    }
+  }
+
+  return {...toRefs(formInput), sendResetPasswordLink};
 }
