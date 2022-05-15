@@ -1,5 +1,5 @@
 import { reactive, toRefs } from 'vue'
-import { EmailInput, SignUpInput, SignInInput } from '~/composables/types/formInput'
+import {EmailInput, SignUpInput, SignInInput, NewPasswordInput} from '~/composables/types/formInput'
 import {
   getAuth,
   sendSignInLinkToEmail,
@@ -10,7 +10,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   Unsubscribe,
-  onAuthStateChanged, sendPasswordResetEmail,
+  onAuthStateChanged, sendPasswordResetEmail, verifyPasswordResetCode, confirmPasswordReset,
 } from '@firebase/auth'
 import { useState } from '#app'
 
@@ -150,4 +150,39 @@ export const useResetPasswordLink = (onSuccess = defaultSuccessCallback, onError
   }
 
   return {...toRefs(formInput), sendResetPasswordLink};
+}
+
+export const useResetPassword = (oobCode:string, onSuccess = defaultSuccessCallback, onError = defaultErrorCallback) => {
+  const formInputs = reactive<NewPasswordInput>({
+    email: '',
+    password: '',
+    confirm: '',
+  })
+  const resetPassword = async () => {
+    if (formInputs.password != formInputs.confirm) {
+      onError(new Error('パスワードが確認用パスワードと一致していません。'))
+      return
+    }
+    const auth = getAuth()
+    try {
+      const verifiedEmail = await verifyPasswordResetCode(auth, oobCode);
+      // 入力されたメールアドレスが正しいものかどうか検証する。
+      if (verifiedEmail != formInputs.email) {
+        onError(new Error('メールアドレスが不正です。'))
+        return
+      }
+    } catch(e) {
+      onError(new Error('パスワード変更の有効期限が切れています。ログイン画面に戻って、もう一度パスワードを設定を行ってください。'))
+    }
+
+    try {
+      await confirmPasswordReset(auth, oobCode, formInputs.password)
+      onSuccess()
+    } catch(e) {
+      console.log(e);
+      onError(new Error('エラーが起きました。ログイン画面に戻って、もう一度パスワードを設定を行ってください。'))
+    }
+  }
+
+  return {...toRefs(formInputs), resetPassword}
 }

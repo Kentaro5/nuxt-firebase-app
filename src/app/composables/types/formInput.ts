@@ -6,6 +6,10 @@ type PasswordInput = {
     password: string
 }
 
+type ConfirmPasswordInput = {
+    confirm: string
+}
+
 type UserNameInput = {
     userName: string
 }
@@ -13,3 +17,5 @@ type UserNameInput = {
 export const SignUpInput = EmailInput & PasswordInput & UserNameInput
 
 export const SignInInput = EmailInput & PasswordInput
+
+export const NewPasswordInput = EmailInput & PasswordInput & ConfirmPasswordInput
