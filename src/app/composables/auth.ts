@@ -73,9 +73,7 @@ export const useTwitterSignUp = (onSuccess: (user: User) => void = defaultSucces
     const auth = getAuth()
     try {
       const result = await signInWithPopup(auth, provider)
-      const credential = TwitterAuthProvider.credentialFromResult(result);
-      // const token = credential.accessToken;
-      // const secret = credential.secret;
+      //const credential = TwitterAuthProvider.credentialFromResult(result);
       const user = result.user;
       onSuccess(user)
       // The signed-in user info.
