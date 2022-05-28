@@ -1,5 +1,6 @@
 import { reactive, toRefs } from 'vue'
 import {EmailInput, SignUpInput, SignInInput, NewPasswordInput} from '~/composables/types/formInput'
+import {FirebaseAuthError} from '~/composables/types/firebase'
 import {
   getAuth,
   sendSignInLinkToEmail,
@@ -10,7 +11,12 @@ import {
   signInWithEmailAndPassword,
   signOut,
   Unsubscribe,
-  onAuthStateChanged, sendPasswordResetEmail, verifyPasswordResetCode, confirmPasswordReset,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  verifyPasswordResetCode,
+  confirmPasswordReset,
+  TwitterAuthProvider,
+  signInWithPopup,
 } from '@firebase/auth'
 import { useState } from '#app'
 
@@ -59,6 +65,26 @@ export const useSendSignLink = (onSuccess = defaultSuccessCallback, onError = de
   }
 
   return { ...toRefs(formInput), sendSignInLink }
+}
+
+export const useTwitterSignUp = (onSuccess: (user: User) => void = defaultSuccessCallback, onError = defaultErrorCallback) => {
+  const twitterSignUp = async () => {
+    const provider = new TwitterAuthProvider()
+    const auth = getAuth()
+    try {
+      const result = await signInWithPopup(auth, provider)
+      //const credential = TwitterAuthProvider.credentialFromResult(result);
+      const user = result.user;
+      onSuccess(user)
+      // The signed-in user info.
+    } catch (e) {
+      onError({
+        ...(e as Error)
+      })
+    }
+  }
+
+  return {twitterSignUp}
 }
 
 export const useSignUp = (onSuccess: (user: User) => void = defaultSuccessCallback, onError = defaultErrorCallback) => {
